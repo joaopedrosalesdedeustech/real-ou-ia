@@ -144,17 +144,3 @@ python main.py
 ```bash
 python -m pytest
 ```
-
----
-
-## Recursos externos
-
-- [Pygame](https://www.pygame.org/): biblioteca de jogos em Python.
-- [Pytest](https://docs.pytest.org/): biblioteca de testes.
-- [Template da disciplina](https://github.com/ICEI-PUC-Minas-PPL-CDIA/IntroAlgs_pygame_template): estrutura inicial do projeto.
-
----
-
-## Declaração de originalidade
-
-Este projeto foi desenvolvido pelos integrantes do grupo para a disciplina, a partir do template oficial. Os recursos externos utilizados estão referenciados acima.
