@@ -1,3 +1,4 @@
+"""Ponto de entrada do jogo "Real ou IA?". Execute com: python main.py"""
 from src.jogo import executar_jogo
 
 
