@@ -84,6 +84,28 @@ def test_salvar_recorde_tipo_invalido(arquivo_recorde):
         dados.salvar_recorde("10")
 
 
+def test_salvar_recorde_nao_deixa_arquivo_temporario(arquivo_recorde):
+    """A gravação usa um arquivo temporário, que não pode sobrar na pasta."""
+    dados.salvar_recorde(40)
+    assert [arquivo.name for arquivo in arquivo_recorde.parent.iterdir()] == ["recorde.txt"]
+    assert arquivo_recorde.read_text(encoding="utf-8") == "40\n"
+
+
+def test_salvar_recorde_cria_a_pasta_se_nao_existir(tmp_path, monkeypatch):
+    """Se a pasta do recorde não existir, ela é criada."""
+    caminho = tmp_path / "nova_pasta" / "recorde.txt"
+    monkeypatch.setattr(dados, "ARQUIVO_RECORDE", caminho)
+    assert dados.salvar_recorde(10) == 10
+    assert caminho.read_text(encoding="utf-8") == "10\n"
+
+
+def test_salvar_recorde_igual_nao_reescreve_o_arquivo(arquivo_recorde):
+    """Pontuação igual ao recorde não conta como novo recorde."""
+    arquivo_recorde.write_text("50", encoding="utf-8")
+    assert dados.salvar_recorde(50) == 50
+    assert arquivo_recorde.read_text(encoding="utf-8") == "50"
+
+
 # --- Cartões ---------------------------------------------------------------
 
 @pytest.fixture
@@ -195,3 +217,26 @@ def test_arquivo_real_de_cartoes_tem_cartoes_suficientes_para_uma_partida():
     assert len(cartoes) >= CARTOES_POR_PARTIDA
     assert any(c["confiavel"] for c in cartoes)
     assert any(not c["confiavel"] for c in cartoes)
+
+
+def test_erro_informa_o_numero_do_cartao_e_o_campo_que_falta(arquivo_cartoes):
+    """A mensagem de erro diz qual cartão tem problema e qual campo falta."""
+    escrever_json(arquivo_cartoes, [
+        {"texto": "a", "confiavel": True, "pista": "b"},
+        {"texto": "c", "confiavel": False},
+    ])
+    with pytest.raises(ValueError) as erro:
+        dados.carregar_cartoes()
+    assert "cartão 2" in str(erro.value)
+    assert "pista" in str(erro.value)
+
+
+def test_validar_cartao_aceita_cartao_correto():
+    """Um cartão bem formado não gera erro."""
+    dados.validar_cartao({"texto": "a", "confiavel": False, "pista": "b"}, 1)
+
+
+def test_validar_cartao_rejeita_pista_so_com_espacos():
+    """Pista com apenas espaços conta como vazia."""
+    with pytest.raises(ValueError):
+        dados.validar_cartao({"texto": "a", "confiavel": True, "pista": "   "}, 1)

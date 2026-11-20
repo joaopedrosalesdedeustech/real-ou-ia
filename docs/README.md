@@ -26,7 +26,7 @@ Mudanças em relação à proposta inicial (Entrega 1):
 | Entrega 3 | Testes ampliados: lógica, arquivos e interface (partidas completas simuladas). | Mais segurança ao alterar o código. |
 | Entrega 3 | Cada partida **sorteia 15 cartões** em ordem aleatória (antes, todos os cartões do arquivo apareciam sempre na mesma ordem). | Os cartões originais alternavam confiável e suspeito, o que permitia acertar pelo padrão. Sortear evita isso e torna cada partida diferente. |
 | Entrega 3 | Foram acrescentados 5 cartões ao arquivo (20 no total), sem alterar os 15 da Aiandra. Incluem afirmações confiáveis com palavras absolutas e suspeitas com palavras cautelosas, além de privacidade e busca reversa de imagens. | Nos 15 originais, os cartões suspeitos usavam palavras como "sempre" e "prova" e os confiáveis usavam "pode" e "ajuda", o que dava para acertar sem analisar o conteúdo. |
-| Entrega 3 | Leitura de `cartoes.json` e `recorde.txt` passou a aceitar arquivos salvos com BOM; erros ao ler ou gravar o recorde não fecham mais o jogo. | Evitar falhas por detalhes de formato de arquivo no Windows e por falta de permissão. |
+| Entrega 3 | `src/dados.py` (da Aiandra) foi reescrito mantendo as mesmas funções públicas: validação dividida em `validar_cartao`, mensagens de erro que dizem o número do cartão e os campos que faltam, leitura com BOM aceita, e recorde gravado em arquivo temporário que depois substitui o original. Erros ao ler ou gravar o recorde não fecham mais o jogo. | Evitar falhas por detalhes de formato de arquivo no Windows, facilitar achar erros no `cartoes.json` e não corromper o recorde se a gravação for interrompida. |
 
 ## Melhorias não implementadas
 

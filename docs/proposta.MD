@@ -111,7 +111,7 @@
 
 ## 17. Testes implementados
 
-Testes automatizados com `pytest` (mais de 100 testes), sem abrir janela:
+Testes automatizados com `pytest` (mais de 110 testes), sem abrir janela:
 
 - `tests/test_logica.py`: `interpretar_comando` (maiúsculas, acentos, espaços, comando inválido), `checar_resposta`, `calcular_pontos`, `tomar_dano`, `jogador_perdeu`, `processar_comando` (acerto, erro, verificação, vitória e derrota), `avancar_cartao`, `sortear_cartoes`, `e_novo_recorde` e `quebrar_texto`.
 - `tests/test_dados.py`: `carregar_recorde` e `salvar_recorde` (arquivo ausente, vazio, inválido, recorde maior e menor) e `carregar_cartoes` (campos obrigatórios, tipos e erros), além de conferir o arquivo real de cartões.
@@ -128,7 +128,7 @@ O projeto parte do template da disciplina, mantendo sua estrutura de pastas:
 | `main.py` | Ponto de entrada |
 | `src/jogo.py` | Loop principal, eventos de teclado e desenho das telas (jogo e resultado final) |
 | `src/funcoes.py` | Regras do jogo, sem depender do Pygame: `interpretar_comando`, `checar_resposta`, `processar_comando`, `avancar_cartao`, `sortear_cartoes`, `calcular_pontos`, `tomar_dano`, `jogador_perdeu`, `quebrar_texto` |
-| `src/dados.py` | Leitura e validação dos cartões e leitura/gravação do recorde |
+| `src/dados.py` | Leitura e validação dos cartões (`validar_cartao`) e leitura/gravação do recorde |
 | `src/config.py` | Constantes: tela, cores e regras (vidas, pontos, custo da verificação, comandos válidos) |
 | `data/` | `cartoes.json` e `recorde.txt` |
 | `tests/` | `test_logica.py`, `test_dados.py` e `test_jogo.py` |
