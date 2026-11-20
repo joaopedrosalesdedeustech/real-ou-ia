@@ -14,7 +14,7 @@ Jogo educativo em Python e Pygame sobre **confiabilidade de informações** e **
 |---|---|
 | João Pedro Sales de Deus | Lógica do jogo |
 | João Pedro Sales de Deus | Interface em Pygame |
-| Aiandra de Sousa Silva | Cartões e arquivo de recorde (`dados.py` reescrito na Entrega 3, ver `docs/README.md`) |
+| Aiandra de Sousa Silva | Cartões e arquivo de recorde |
 | Victhor Gabriel Freire de Oliveira | Testes e documentação |
 
 ---
