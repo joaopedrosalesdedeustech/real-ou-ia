@@ -1,0 +1,77 @@
+[
+    {
+        "texto": "Um assistente de IA pode apresentar uma informação inventada com uma linguagem segura e convincente.",
+        "confiavel": true,
+        "pista": "A forma confiante de uma resposta não comprova que ela esteja correta."
+    },
+    {
+        "texto": "Se uma imagem de uma notícia parece realista, isso prova que ela foi registrada no local e na data informados.",
+        "confiavel": false,
+        "pista": "Imagens podem ser editadas ou geradas; procure a publicação original e o contexto."
+    },
+    {
+        "texto": "Comparar uma notícia com outras fontes independentes e confiáveis ajuda a verificar sua veracidade.",
+        "confiavel": true,
+        "pista": "Uma informação importante deve poder ser confirmada por fontes independentes."
+    },
+    {
+        "texto": "Uma resposta produzida por IA é confiável sempre que contém links ou referências bibliográficas.",
+        "confiavel": false,
+        "pista": "Links e referências também podem estar incorretos ou não corresponder ao que foi afirmado."
+    },
+    {
+        "texto": "Uma notícia verdadeira, mas antiga, pode ser compartilhada fora de contexto e causar uma interpretação enganosa.",
+        "confiavel": true,
+        "pista": "Confira a data, o local e a situação a que a publicação originalmente se referia."
+    },
+    {
+        "texto": "Uma publicação muito compartilhada nas redes sociais já foi confirmada por muitas pessoas.",
+        "confiavel": false,
+        "pista": "Número de compartilhamentos indica alcance, não comprovação."
+    },
+    {
+        "texto": "Vídeos e áudios podem ser alterados digitalmente para fazer alguém parecer dizer algo que não disse.",
+        "confiavel": true,
+        "pista": "Edições e recursos de síntese de voz e imagem podem modificar conteúdos."
+    },
+    {
+        "texto": "Se um texto está bem escrito e não apresenta erros de português, suas informações são verdadeiras.",
+        "confiavel": false,
+        "pista": "A qualidade da escrita não demonstra a qualidade das evidências."
+    },
+    {
+        "texto": "Verificar quem publicou uma informação e consultar a fonte original são cuidados úteis antes de compartilhá-la.",
+        "confiavel": true,
+        "pista": "Procure identificar o autor, a instituição responsável e o documento ou registro original."
+    },
+    {
+        "texto": "Toda imagem criada por inteligência artificial apresenta um aviso visível que permite identificá-la facilmente.",
+        "confiavel": false,
+        "pista": "Nem toda imagem sintética possui marca visível ou identificação preservada."
+    },
+    {
+        "texto": "Uma mensagem que pede compartilhamento urgente e não apresenta fonte merece ser verificada antes de ser repassada.",
+        "confiavel": true,
+        "pista": "Pressa e ausência de fonte são motivos para interromper o compartilhamento e investigar."
+    },
+    {
+        "texto": "Se uma informação aparece em um site com aparência profissional, não é necessário conferir o endereço nem o autor.",
+        "confiavel": false,
+        "pista": "Páginas falsas podem copiar o visual de sites conhecidos."
+    },
+    {
+        "texto": "Ferramentas de IA podem ser úteis para organizar ideias, mas informações importantes geradas por elas precisam ser conferidas.",
+        "confiavel": true,
+        "pista": "Use a ferramenta como apoio e confirme os dados em fontes adequadas."
+    },
+    {
+        "texto": "Uma captura de tela de uma conversa ou notícia é prova suficiente de que o conteúdo foi publicado daquela forma.",
+        "confiavel": false,
+        "pista": "Capturas de tela podem ser editadas; procure a publicação original quando possível."
+    },
+    {
+        "texto": "Ao encontrar um dado surpreendente, procurar a data, o contexto e a origem ajuda a evitar conclusões precipitadas.",
+        "confiavel": true,
+        "pista": "Uma frase isolada pode omitir informações essenciais; investigue de onde veio e a que se refere."
+    }
+]
