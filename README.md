@@ -205,8 +205,7 @@ Os testes cobrem a lógica do jogo, a leitura dos arquivos e a interface (inclui
 - [Pytest](https://docs.pytest.org/): biblioteca usada nos testes automatizados. O pacote opcional `pytest-cov` pode ser usado para medir a cobertura.
 - [Template da disciplina](https://github.com/ICEI-PUC-Minas-PPL-CDIA/IntroAlgs_pygame_template): estrutura inicial de pastas e arquivos. Os arquivos `src/sprites.py`, `assets/imagens/spritesheet.bmp` e `data/ranking.txt` vieram do template e não são usados no jogo.
 - **Fonte:** o jogo usa a fonte Arial instalada no sistema (ou a fonte padrão do Pygame, se a Arial não existir). Nenhum arquivo de fonte, imagem ou som externo foi incluído.
-- **Textos dos cartões:** os 15 primeiros foram escritos pela Aiandra; os 5 últimos (que também cobrem privacidade e busca reversa de imagens) foram redigidos com apoio de IA.
-- **Ferramentas de IA:** ferramentas de inteligência artificial generativa (Claude, da Anthropic) foram usadas como apoio na elaboração do código, dos testes e da documentação.
+- **Textos dos cartões:** os 15 primeiros foram escritos pela Aiandra
 
 ---
 
