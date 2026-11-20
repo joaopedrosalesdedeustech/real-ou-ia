@@ -1,5 +1,7 @@
 # Proposta Inicial do Jogo
 
+> Documento atualizado para a versão final (Entrega 3). As partes que mudaram em relação ao planejamento inicial estão nas seções 5, 7, 15, 17, 18 e 21 e também registradas em `docs/README.md`.
+
 ## 1. Nome provisório do jogo
 
 **Nome:**
@@ -20,7 +22,7 @@
 
 **Como esse tema se relaciona com o jogo?**
 
-> O tema está na regra principal do jogo. O jogador precisa decidir se cada informação apresentada (resposta de um assistente de IA, publicação de rede social ou notícia) é confiável ou suspeita. Aceitar uma informação falsa faz o jogador perder uma vida, e pedir uma verificação revela uma pista, mas custa pontos. Assim, o jogo mostra que conferir informações tem um custo, mas ajuda a decidir melhor.
+> O tema está na regra principal do jogo. O jogador precisa decidir se cada afirmação apresentada (sobre respostas de IA, notícias, imagens e publicações online) é confiável ou suspeita. Aceitar uma informação falsa faz o jogador perder uma vida, e pedir uma verificação revela uma pista, mas custa pontos. Assim, o jogo mostra que conferir informações tem um custo, mas ajuda a decidir melhor.
 
 ## 4. Tipo de jogo
 
@@ -32,7 +34,7 @@
 
 **Descrição:**
 
-> A tela mostra um "cartão" por vez, com um texto curto, por exemplo: *"Assistente de IA: a Muralha da China é visível a olho nu do espaço."* Abaixo do cartão há uma caixa de texto, onde o jogador digita um comando e aperta Enter: `confiavel`, `suspeito` ou `verificar`. Se escolher `verificar`, o jogo mostra uma pista sobre o cartão (por exemplo, "não cita fonte" ou "promete cura milagrosa") e desconta 1 ponto. Depois o jogador ainda precisa responder `confiavel` ou `suspeito`. O jogo informa se a resposta estava certa e passa para o próximo cartão. A tela também mostra pontos, vidas e o número do cartão atual (por exemplo, 4 de 15).
+> A tela mostra um "cartão" por vez, com uma afirmação sobre informação e IA, por exemplo: *"Uma publicação muito compartilhada nas redes sociais já foi confirmada por muitas pessoas."* Abaixo do cartão há uma caixa de texto, onde o jogador digita um comando e aperta Enter: `confiavel`, `suspeito` ou `verificar`. Se escolher `verificar`, o jogo mostra uma pista sobre o cartão e desconta 1 ponto. Depois o jogador ainda precisa responder `confiavel` ou `suspeito`. O jogo informa se a resposta estava certa, mostra uma explicação do cartão e, quando o jogador aperta Enter, passa para o próximo cartão. A tela também mostra pontos, recorde, vidas e o número do cartão atual (por exemplo, 4 de 15). Ao final, uma tela de resultado mostra a pontuação, o recorde e se a partida foi vitória ou derrota.
 
 ## 6. Objetivo do jogador
 
@@ -45,7 +47,7 @@
 - Regra 1: O jogador começa com 3 vidas e 0 pontos.
 - Regra 2: Cada resposta correta (`confiavel` ou `suspeito`) soma 10 pontos.
 - Regra 3: Cada resposta errada retira 1 vida.
-- Regra 4: O comando `verificar` mostra a pista do cartão e retira 1 ponto (uma vez por cartão).
+- Regra 4: O comando `verificar` mostra a pista do cartão e retira 1 ponto (uma vez por cartão; os pontos nunca ficam abaixo de zero).
 - Regra 5: Comandos inválidos (ex.: `talvez`) exibem "comando inválido" e não alteram pontos nem vidas.
 
 ## 8. Condição de vitória
@@ -91,42 +93,64 @@
 - Melhoria 2: Cartões sorteados em ordem aleatória a cada partida e níveis de dificuldade (pistas mais sutis).
 - Melhoria 3: Ranking com os melhores resultados (usando `data/ranking.txt`) e efeitos sonoros.
 
+*Status na versão final: nenhuma das melhorias foi implementada; ficam como evolução futura.*
+
 ## 15. Estruturas de dados previstas
 
 - **Lista de dicionários:** os cartões, cada um com `texto`, `confiavel` (booleano) e `pista`.
-- **Dicionário de estado do jogo:** `pontos`, `vidas`, `indice_cartao`, `pista_visivel` e `texto_digitado`.
-- **Conjunto (ou tupla) de comandos válidos:** `confiavel`, `suspeito` e `verificar`.
+- **Dicionário de estado da partida** (`criar_estado`): `pontos`, `vidas`, `indice`, `pista_visivel`, `mensagem`, `tipo_mensagem`, `resultado` e `fim`.
+- **Tupla de comandos válidos** (`COMANDOS_VALIDOS`): `confiavel`, `suspeito` e `verificar`.
+- **Conjunto de campos obrigatórios** de cada cartão, usado na validação do arquivo.
 - **Strings:** tratamento do texto digitado (`strip`, `lower` e remoção de acentos).
+- **Lista de linhas:** o texto de cada cartão é dividido em linhas para caber na tela.
 
 ## 16. Uso de arquivos
 
-- `data/cartoes.json`: leitura dos cartões do jogo (texto, gabarito e pista).
-- `data/recorde.txt`: leitura e gravação da maior pontuação (já previsto no template, em `src/dados.py`).
+- `data/cartoes.json`: leitura dos 15 cartões do jogo (texto, gabarito e pista), com validação dos campos.
+- `data/recorde.txt`: leitura e gravação da maior pontuação (em `src/dados.py`). O recorde só é gravado quando a pontuação da partida o supera.
 
-## 17. Testes planejados
+## 17. Testes implementados
 
-Testes com `pytest` em `tests/test_logica.py`, sem abrir a janela do jogo:
+Testes automatizados com `pytest` (cerca de 90 testes), sem abrir janela:
 
-- `interpretar_comando`: aceita `Confiável`, `  SUSPEITO ` e `verificar`; retorna `None` para `talvez` e texto vazio.
-- `checar_resposta`: acerto e erro para cartões confiáveis e suspeitos.
-- `calcular_pontos`: soma de +10 por acerto e desconto de 1 ponto por verificação.
-- `tomar_dano` e `jogador_perdeu`: perda de vidas e derrota com 0 vidas.
-- `carregar_recorde` e `salvar_recorde`: arquivo inexistente, vazio e com valor.
-- `carregar_cartoes`: lista de cartões com os campos obrigatórios.
+- `tests/test_logica.py`: `interpretar_comando` (maiúsculas, acentos, espaços, comando inválido), `checar_resposta`, `calcular_pontos`, `tomar_dano`, `jogador_perdeu`, `processar_comando` (acerto, erro, verificação, vitória e derrota), `avancar_cartao`, `e_novo_recorde` e `quebrar_texto`.
+- `tests/test_dados.py`: `carregar_recorde` e `salvar_recorde` (arquivo ausente, vazio, inválido, recorde maior e menor) e `carregar_cartoes` (campos obrigatórios, tipos e erros), além de conferir o arquivo real de cartões.
+- `tests/test_jogo.py`: desenho das telas e partidas completas simuladas com eventos de teclado falsos (vitória, derrota, comando inválido, Backspace, ESC, jogar novamente e falhas ao carregar os cartões).
 
-## 18. Organização inicial do código
+Veja `tests/README.md` para mais detalhes.
+
+## 18. Organização do código
 
 O projeto parte do template da disciplina, mantendo sua estrutura de pastas:
 
 | Arquivo | Responsabilidade |
 |---|---|
 | `main.py` | Ponto de entrada |
-| `src/jogo.py` | Loop principal, eventos de teclado, atualização e desenho da tela |
-| `src/funcoes.py` | Regras do jogo: `interpretar_comando`, `checar_resposta`, `calcular_pontos`, `tomar_dano`, `jogador_perdeu` |
-| `src/dados.py` | Leitura dos cartões e leitura/gravação do recorde |
-| `src/config.py` | Constantes: tela, cores, caminhos dos arquivos, número de vidas e de cartões |
+| `src/jogo.py` | Loop principal, eventos de teclado e desenho das telas (jogo e resultado final) |
+| `src/funcoes.py` | Regras do jogo, sem depender do Pygame: `interpretar_comando`, `checar_resposta`, `processar_comando`, `avancar_cartao`, `calcular_pontos`, `tomar_dano`, `jogador_perdeu`, `quebrar_texto` |
+| `src/dados.py` | Leitura e validação dos cartões e leitura/gravação do recorde |
+| `src/config.py` | Constantes: tela, cores e regras (vidas, pontos, custo da verificação, comandos válidos) |
 | `data/` | `cartoes.json` e `recorde.txt` |
-| `tests/test_logica.py` | Testes das funções de lógica |
-| `docs/` | Esta proposta |
+| `tests/` | `test_logica.py`, `test_dados.py` e `test_jogo.py` |
+| `docs/` | Esta proposta e o registro de decisões |
 
-O jogo usará apenas texto e retângulos, então `src/sprites.py` e a spritesheet do template não serão utilizados.
+O jogo usa apenas texto e retângulos, então `src/sprites.py` e a spritesheet do template não são utilizados.
+
+## 19. Recursos externos
+
+- Python, Pygame (janela, desenho e teclado) e Pytest (testes).
+- Template oficial da disciplina: https://github.com/ICEI-PUC-Minas-PPL-CDIA/IntroAlgs_pygame_template
+- Fonte Arial do sistema (ou a fonte padrão do Pygame). Nenhuma imagem, som ou fonte externa foi incluída.
+- Os textos dos cartões foram escritos pelo grupo.
+- Ferramentas de IA generativa (Claude, da Anthropic) foram usadas como apoio na elaboração do código, dos testes e da documentação.
+
+## 20. Declaração de originalidade
+
+Declaramos que a proposta e o jogo foram desenvolvidos pelo grupo a partir do template oficial da disciplina. Os recursos externos utilizados, incluindo o apoio de ferramentas de IA, estão referenciados na seção 19 e no `README.md`.
+
+## 21. Desafios encontrados no desenvolvimento
+
+- **Digitação no Pygame:** como não existe `input()`, o texto é montado letra por letra com o evento `TEXTINPUT`, o que também permite digitar acentos.
+- **Integração das partes:** a lógica, a interface, os cartões e o recorde foram feitos por pessoas diferentes, e as funções precisaram ser ajustadas entre si (por exemplo, a interface passou a usar as funções de `src/dados.py` sem receber caminhos).
+- **Testar uma interface:** para testar partidas completas sem abrir janela, os testes enviam eventos de teclado falsos ao loop principal e usam arquivos temporários.
+- **Cartões bons:** foi preciso escrever afirmações e pistas claras, sem que a resposta fosse óbvia demais.

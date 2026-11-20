@@ -1,0 +1,14 @@
+# Python
+__pycache__/
+*.pyc
+.pytest_cache/
+.coverage
+htmlcov/
+.venv/
+venv/
+
+# Sistema e editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
