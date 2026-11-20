@@ -1,4 +1,6 @@
 """Testes das regras do jogo (src/funcoes.py), sem abrir janela."""
+import random
+
 import pygame
 
 from src.funcoes import (
@@ -16,6 +18,7 @@ from src.funcoes import (
     avancar_cartao,
     e_novo_recorde,
     quebrar_texto,
+    sortear_cartoes,
 )
 
 CARTAO_CONFIAVEL = {"texto": "A água ferve a 100 °C.", "confiavel": True, "pista": "Fato básico."}
@@ -270,6 +273,64 @@ def test_sem_fim_no_meio_da_partida():
     estado = criar_estado()
     processar_comando(estado, CARTAO_SUSPEITO, "suspeito", 15)
     assert estado["fim"] is None
+
+
+# --- Sorteio de cartões ----------------------------------------------------
+
+LISTA_DE_CARTOES = [
+    {"texto": "cartão %d" % i, "confiavel": i % 2 == 0, "pista": "p"} for i in range(20)
+]
+
+
+def test_sortear_cartoes_devolve_a_quantidade_pedida():
+    """Deve sortear exatamente a quantidade de cartões pedida."""
+    assert len(sortear_cartoes(LISTA_DE_CARTOES, 15)) == 15
+
+
+def test_sortear_cartoes_sem_repeticao():
+    """Nenhum cartão pode aparecer duas vezes na mesma partida."""
+    sorteados = sortear_cartoes(LISTA_DE_CARTOES, 15)
+    textos = [c["texto"] for c in sorteados]
+    assert len(set(textos)) == 15
+
+
+def test_sortear_cartoes_usa_apenas_cartoes_da_lista():
+    """Os cartões sorteados vêm da lista original."""
+    for cartao in sortear_cartoes(LISTA_DE_CARTOES, 15):
+        assert cartao in LISTA_DE_CARTOES
+
+
+def test_sortear_cartoes_nao_altera_a_lista_original():
+    """A lista original continua com todos os cartões e na mesma ordem."""
+    copia = list(LISTA_DE_CARTOES)
+    sortear_cartoes(LISTA_DE_CARTOES, 15)
+    assert LISTA_DE_CARTOES == copia
+
+
+def test_sortear_cartoes_com_menos_cartoes_que_o_pedido():
+    """Se a lista tem menos cartões que o pedido, todos são usados."""
+    assert len(sortear_cartoes(LISTA_DE_CARTOES[:3], 15)) == 3
+
+
+def test_sortear_cartoes_lista_vazia():
+    """Lista vazia resulta em sorteio vazio."""
+    assert sortear_cartoes([], 15) == []
+
+
+def test_sortear_cartoes_com_semente_fixa_repete_o_resultado():
+    """Com a mesma semente, o sorteio é sempre igual (útil para testar)."""
+    primeiro = sortear_cartoes(LISTA_DE_CARTOES, 15, random.Random(7))
+    segundo = sortear_cartoes(LISTA_DE_CARTOES, 15, random.Random(7))
+    assert primeiro == segundo
+
+
+def test_sortear_cartoes_varia_a_ordem_entre_sorteios():
+    """Sementes diferentes devem gerar ordens diferentes."""
+    ordens = {
+        tuple(c["texto"] for c in sortear_cartoes(LISTA_DE_CARTOES, 15, random.Random(semente)))
+        for semente in range(10)
+    }
+    assert len(ordens) > 1
 
 
 # --- Recorde ---------------------------------------------------------------

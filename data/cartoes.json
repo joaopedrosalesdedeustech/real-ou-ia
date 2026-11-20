@@ -73,5 +73,30 @@
         "texto": "Ao encontrar um dado surpreendente, procurar a data, o contexto e a origem ajuda a evitar conclusões precipitadas.",
         "confiavel": true,
         "pista": "Uma frase isolada pode omitir informações essenciais; investigue de onde veio e a que se refere."
+    },
+    {
+        "texto": "Nenhuma ferramenta de IA garante que suas respostas estejam sempre corretas.",
+        "confiavel": true,
+        "pista": "Sistemas de IA podem errar e até inventar informações; por isso respostas importantes precisam ser conferidas."
+    },
+    {
+        "texto": "Uma notícia que confirma o que eu já penso costuma ser verdadeira, então posso compartilhá-la sem conferir.",
+        "confiavel": false,
+        "pista": "Concordar com uma informação não a torna verdadeira. Conteúdos que agradam também precisam ser verificados."
+    },
+    {
+        "texto": "Todo conteúdo importante deve ser conferido em mais de uma fonte antes de ser compartilhado.",
+        "confiavel": true,
+        "pista": "Fontes diferentes e independentes reduzem o risco de repassar um erro."
+    },
+    {
+        "texto": "Informar CPF e senhas a um assistente de IA é seguro, desde que a conversa pareça privada.",
+        "confiavel": false,
+        "pista": "Dependendo do serviço, conversas podem ser guardadas ou revisadas. Evite compartilhar dados pessoais e senhas."
+    },
+    {
+        "texto": "A busca reversa de imagens pode ajudar a descobrir de onde uma foto veio.",
+        "confiavel": true,
+        "pista": "Ela mostra onde a imagem já foi publicada, o que ajuda a achar a fonte e a data originais."
     }
 ]

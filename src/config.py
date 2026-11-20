@@ -28,6 +28,7 @@ LARANJA = (240, 160, 60)
 VIDAS_INICIAIS = 3
 PONTOS_ACERTO = 10
 CUSTO_VERIFICACAO = 1
+CARTOES_POR_PARTIDA = 15
 COMANDOS_VALIDOS = ("confiavel", "suspeito", "verificar")
 # Como cada resposta aparece escrita na tela (com acento).
 ROTULOS = {"confiavel": "confiável", "suspeito": "suspeito"}

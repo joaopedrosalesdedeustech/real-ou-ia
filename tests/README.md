@@ -7,8 +7,8 @@ Nenhum teste abre janela: o Pygame roda com o driver de vídeo "dummy" e nenhum 
 
 | Arquivo | O que testa |
 |---|---|
-| `test_logica.py` | Regras do jogo em `src/funcoes.py`: interpretação dos comandos digitados, acerto e erro, pontos, vidas, vitória e derrota, recorde e quebra de texto em linhas. |
-| `test_dados.py` | Leitura e gravação de arquivos em `src/dados.py`: recorde (arquivo ausente, vazio, inválido, maior e menor) e cartões (campos obrigatórios, tipos e erros). Também confere o arquivo real `data/cartoes.json`: 15 cartões, sem repetição, de tamanho adequado e com os dois tipos. |
+| `test_logica.py` | Regras do jogo em `src/funcoes.py`: interpretação dos comandos digitados, acerto e erro, pontos, vidas, vitória e derrota, recorde, sorteio dos cartões e quebra de texto em linhas. |
+| `test_dados.py` | Leitura e gravação de arquivos em `src/dados.py`: recorde (arquivo ausente, vazio, inválido, com BOM, maior e menor) e cartões (campos obrigatórios, tipos e erros). Também confere o arquivo real `data/cartoes.json`: cartões suficientes para uma partida (mínimo de 15), sem repetição, de tamanho adequado e com os dois tipos. |
 | `test_jogo.py` | Interface em `src/jogo.py`: desenho das telas (cartão, pista, vidas, cursor, tela final) e **partidas completas simuladas** com eventos de teclado falsos (vitória, derrota, comando inválido, Backspace, ESC, jogar novamente e falhas ao carregar os cartões). |
 
 ## Como executar

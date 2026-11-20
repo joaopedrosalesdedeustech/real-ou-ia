@@ -4,7 +4,7 @@ Jogo educativo em Python e Pygame sobre **confiabilidade de informações** e **
 
 > Projeto final da disciplina **Jogos para o Futuro** (Introdução a Algoritmos), desenvolvido a partir do template oficial da disciplina.
 
-**Status:** em desenvolvimento. A versão atual (Entrega 2) já é jogável do início ao fim: 15 cartões, pontos, vidas, pistas, vitória/derrota e recorde salvo em arquivo.
+**Status:** em desenvolvimento. A versão atual já é jogável do início ao fim: 15 cartões sorteados por partida, pontos, vidas, pistas, vitória/derrota e recorde salvo em arquivo.
 
 ---
 
@@ -64,7 +64,7 @@ Ao final da partida aparece a tela de resultado (vitória ou derrota, pontuaçã
 - **Resposta certa:** +10 pontos.
 - **Resposta errada:** perde 1 vida.
 - **Verificar um cartão:** −1 ponto (só cobra uma vez por cartão, e os pontos nunca ficam abaixo de zero).
-- Cada partida tem **15 cartões**.
+- Cada partida tem **15 cartões**, sorteados em ordem aleatória entre os cartões do arquivo `data/cartoes.json`. A cada nova partida o sorteio muda.
 
 ### Fim de jogo
 
@@ -130,6 +130,7 @@ Cada cartão é um dicionário guardado em `data/cartoes.json`:
 | `criar_estado()` | `src/funcoes.py` | Cria o estado inicial da partida (pontos, vidas, cartão atual) |
 | `processar_comando(estado, cartao, comando, total)` | `src/funcoes.py` | Aplica um comando do jogador: acerto, erro, verificação ou comando inválido; define vitória ou derrota |
 | `avancar_cartao(estado)` | `src/funcoes.py` | Passa para o próximo cartão |
+| `sortear_cartoes(cartoes, quantidade)` | `src/funcoes.py` | Sorteia os cartões da partida, sem repetir e em ordem aleatória |
 | `e_novo_recorde(pontos, recorde)` | `src/funcoes.py` | Indica se a pontuação superou o recorde |
 | `quebrar_texto(texto, largura_max, medir_largura)` | `src/funcoes.py` | Divide um texto em linhas para caber no cartão |
 | `desenhar_tela_jogo(...)` / `desenhar_tela_fim(...)` | `src/jogo.py` | Desenham a tela do jogo e a tela de resultado final |
@@ -171,7 +172,7 @@ Os testes cobrem a lógica do jogo, a leitura dos arquivos e a interface (inclui
 | **Entrada e saída de dados** | Texto digitado pelo jogador na janela; informações, mensagens e pistas exibidas na tela |
 | **Condicionais** | Decisão entre acerto, erro, verificação e comando inválido (`processar_comando`) |
 | **Laços** | Loop principal do jogo (`executar_jogo`), validação dos cartões e quebra do texto em linhas |
-| **Listas** | Lista de cartões carregada do arquivo; lista de linhas de texto de cada cartão |
+| **Listas** | Lista de cartões carregada do arquivo e sorteada para a partida; lista de linhas de texto de cada cartão |
 | **Dicionários** | Cada cartão (`texto`, `confiavel`, `pista`) e o estado da partida (`criar_estado`) |
 | **Tuplas e conjuntos** | Tupla de comandos válidos (`COMANDOS_VALIDOS`), cores em RGB e conjunto de campos obrigatórios do cartão (`src/dados.py`) |
 | **Funções e modularização** | Código separado em `config.py`, `funcoes.py`, `dados.py` e `jogo.py`, com funções pequenas e documentadas |
@@ -190,7 +191,8 @@ Os testes cobrem a lógica do jogo, a leitura dos arquivos e a interface (inclui
 - **Comandos tolerantes:** o texto digitado ignora maiúsculas, espaços extras e acentos (`Confiável`, `confiavel` e `  CONFIAVEL ` valem o mesmo). Comando inválido não tira pontos nem vidas.
 - **Explicação depois de cada resposta:** o jogador vê por que o cartão era confiável ou suspeito. O objetivo é que o jogo ensine a checar informações, e não só pontue.
 - **Pontos nunca negativos:** pedir pistas com 0 pontos não deixa a pontuação abaixo de zero, e a pista só é cobrada uma vez por cartão.
-- **Cartões em arquivo `.json`:** é possível trocar ou acrescentar cartões sem mexer no código. O arquivo é validado ao carregar.
+- **Cartões em arquivo `.json`:** é possível trocar ou acrescentar cartões sem mexer no código. O arquivo é validado ao carregar e aceita arquivos salvos com BOM (comum no Windows).
+- **Cartões sorteados:** o arquivo tem mais cartões que uma partida usa (20 para 15). Sortear em ordem aleatória evita que o jogador decore a sequência ou perceba um padrão (por exemplo, alternar confiável e suspeito), e cada nova partida é diferente.
 - **Caminhos independentes da pasta de execução:** `src/dados.py` calcula os caminhos a partir do local do próprio arquivo, então o jogo abre mesmo se for executado de outra pasta.
 - **Testes sem janela:** as partidas completas são simuladas com eventos de teclado falsos e arquivos temporários, e o `recorde.txt` real nunca é alterado pelos testes.
 
@@ -203,7 +205,7 @@ Os testes cobrem a lógica do jogo, a leitura dos arquivos e a interface (inclui
 - [Pytest](https://docs.pytest.org/): biblioteca usada nos testes automatizados. O pacote opcional `pytest-cov` pode ser usado para medir a cobertura.
 - [Template da disciplina](https://github.com/ICEI-PUC-Minas-PPL-CDIA/IntroAlgs_pygame_template): estrutura inicial de pastas e arquivos. Os arquivos `src/sprites.py`, `assets/imagens/spritesheet.bmp` e `data/ranking.txt` vieram do template e não são usados no jogo.
 - **Fonte:** o jogo usa a fonte Arial instalada no sistema (ou a fonte padrão do Pygame, se a Arial não existir). Nenhum arquivo de fonte, imagem ou som externo foi incluído.
-- **Textos dos cartões:** escritos pelo grupo.
+- **Textos dos cartões:** os 15 primeiros foram escritos pela Aiandra; os 5 últimos (que também cobrem privacidade e busca reversa de imagens) foram redigidos com apoio de IA.
 - **Ferramentas de IA:** ferramentas de inteligência artificial generativa (Claude, da Anthropic) foram usadas como apoio na elaboração do código, dos testes e da documentação.
 
 ---
@@ -211,7 +213,7 @@ Os testes cobrem a lógica do jogo, a leitura dos arquivos e a interface (inclui
 ## Melhorias futuras
 
 - Menu inicial e tela de instruções.
-- Cartões em ordem aleatória a cada partida e níveis de dificuldade (pistas mais sutis).
+- Níveis de dificuldade (pistas mais sutis).
 - Ranking com os melhores resultados, usando o `data/ranking.txt` do template.
 - Efeitos sonoros.
 

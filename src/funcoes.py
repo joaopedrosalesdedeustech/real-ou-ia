@@ -3,6 +3,7 @@
 Nada neste módulo depende do Pygame, então tudo aqui pode ser testado
 sem abrir a janela do jogo.
 """
+import random
 import unicodedata
 
 from src.config import (
@@ -172,6 +173,16 @@ def avancar_cartao(estado):
     estado["tipo_mensagem"] = None
     estado["resultado"] = None
     return estado
+
+
+def sortear_cartoes(cartoes, quantidade, gerador=random):
+    """Sorteia 'quantidade' cartões diferentes, em ordem aleatória.
+
+    Não altera a lista original. Se houver menos cartões que o pedido, usa todos.
+    O parâmetro 'gerador' permite usar um sorteio com semente fixa nos testes.
+    """
+    quantidade = min(quantidade, len(cartoes))
+    return gerador.sample(cartoes, quantidade)
 
 
 def e_novo_recorde(pontos, recorde):

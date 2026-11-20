@@ -4,6 +4,7 @@ import json
 import pytest
 
 from src import dados
+from src.config import CARTOES_POR_PARTIDA
 
 
 # --- Recorde ---------------------------------------------------------------
@@ -37,6 +38,12 @@ def test_carregar_recorde_negativo_vira_zero(arquivo_recorde):
     """Um valor negativo no arquivo é tratado como 0."""
     arquivo_recorde.write_text("-5", encoding="utf-8")
     assert dados.carregar_recorde() == 0
+
+
+def test_carregar_recorde_com_bom_e_quebra_de_linha_do_windows(arquivo_recorde):
+    """Recorde salvo com BOM e quebra de linha do Windows (CRLF) deve ser lido corretamente."""
+    arquivo_recorde.write_bytes(b"\xef\xbb\xbf120\r\n")
+    assert dados.carregar_recorde() == 120
 
 
 def test_carregar_recorde_valido(arquivo_recorde):
@@ -142,6 +149,20 @@ def test_carregar_cartoes_conteudo_que_nao_e_lista(arquivo_cartoes):
         dados.carregar_cartoes()
 
 
+def test_carregar_cartoes_arquivo_salvo_com_bom(arquivo_cartoes):
+    """Arquivo salvo com BOM (comum em editores do Windows) deve carregar normalmente."""
+    conteudo = json.dumps([{"texto": "a", "confiavel": True, "pista": "b"}]).encode("utf-8")
+    arquivo_cartoes.write_bytes(b"\xef\xbb\xbf" + conteudo)
+    assert len(dados.carregar_cartoes()) == 1
+
+
+def test_carregar_cartoes_json_malformado(arquivo_cartoes):
+    """JSON com erro de sintaxe deve gerar ValueError (que o jogo trata com um aviso)."""
+    arquivo_cartoes.write_text("[{ 'texto': 1 }", encoding="utf-8")
+    with pytest.raises(ValueError):
+        dados.carregar_cartoes()
+
+
 def test_carregar_cartoes_arquivo_inexistente(arquivo_cartoes):
     """Arquivo inexistente deve gerar FileNotFoundError."""
     with pytest.raises(FileNotFoundError):
@@ -168,9 +189,9 @@ def test_cartoes_reais_tem_exemplos_de_cada_tipo():
     assert sum(1 for c in cartoes if not c["confiavel"]) >= 5
 
 
-def test_arquivo_real_de_cartoes_tem_15_cartoes_validos():
-    """O arquivo data/cartoes.json do jogo deve carregar e ter os 15 cartões."""
+def test_arquivo_real_de_cartoes_tem_cartoes_suficientes_para_uma_partida():
+    """O arquivo data/cartoes.json do jogo deve carregar e ter cartões para uma partida."""
     cartoes = dados.carregar_cartoes()
-    assert len(cartoes) == 15
+    assert len(cartoes) >= CARTOES_POR_PARTIDA
     assert any(c["confiavel"] for c in cartoes)
     assert any(not c["confiavel"] for c in cartoes)

@@ -85,7 +85,7 @@
 
 **Escopo mínimo:**
 
-> Uma janela do Pygame com uma única tela de jogo, que carrega 15 cartões de um arquivo `.json`, lê os comandos digitados, aplica as regras de pontos e vidas, mostra as pistas, termina em vitória ou derrota, salva o recorde em arquivo e tem README, proposta e testes das funções de lógica.
+> Uma janela do Pygame com uma única tela de jogo, que carrega os cartões de um arquivo `.json` (e sorteia 15 por partida), lê os comandos digitados, aplica as regras de pontos e vidas, mostra as pistas, termina em vitória ou derrota, salva o recorde em arquivo e tem README, proposta e testes das funções de lógica.
 
 ## 14. Possíveis melhorias, caso haja tempo
 
@@ -93,7 +93,7 @@
 - Melhoria 2: Cartões sorteados em ordem aleatória a cada partida e níveis de dificuldade (pistas mais sutis).
 - Melhoria 3: Ranking com os melhores resultados (usando `data/ranking.txt`) e efeitos sonoros.
 
-*Status na versão final: nenhuma das melhorias foi implementada; ficam como evolução futura.*
+*Status na versão final: a ordem aleatória dos cartões (Melhoria 2) foi implementada; os cartões são sorteados a cada partida. Menu inicial, níveis de dificuldade, ranking e sons ficam como evolução futura.*
 
 ## 15. Estruturas de dados previstas
 
@@ -106,14 +106,14 @@
 
 ## 16. Uso de arquivos
 
-- `data/cartoes.json`: leitura dos 15 cartões do jogo (texto, gabarito e pista), com validação dos campos.
+- `data/cartoes.json`: leitura dos cartões do jogo (texto, gabarito e pista), com validação dos campos. O arquivo tem 20 cartões e cada partida sorteia 15.
 - `data/recorde.txt`: leitura e gravação da maior pontuação (em `src/dados.py`). O recorde só é gravado quando a pontuação da partida o supera.
 
 ## 17. Testes implementados
 
-Testes automatizados com `pytest` (cerca de 90 testes), sem abrir janela:
+Testes automatizados com `pytest` (mais de 100 testes), sem abrir janela:
 
-- `tests/test_logica.py`: `interpretar_comando` (maiúsculas, acentos, espaços, comando inválido), `checar_resposta`, `calcular_pontos`, `tomar_dano`, `jogador_perdeu`, `processar_comando` (acerto, erro, verificação, vitória e derrota), `avancar_cartao`, `e_novo_recorde` e `quebrar_texto`.
+- `tests/test_logica.py`: `interpretar_comando` (maiúsculas, acentos, espaços, comando inválido), `checar_resposta`, `calcular_pontos`, `tomar_dano`, `jogador_perdeu`, `processar_comando` (acerto, erro, verificação, vitória e derrota), `avancar_cartao`, `sortear_cartoes`, `e_novo_recorde` e `quebrar_texto`.
 - `tests/test_dados.py`: `carregar_recorde` e `salvar_recorde` (arquivo ausente, vazio, inválido, recorde maior e menor) e `carregar_cartoes` (campos obrigatórios, tipos e erros), além de conferir o arquivo real de cartões.
 - `tests/test_jogo.py`: desenho das telas e partidas completas simuladas com eventos de teclado falsos (vitória, derrota, comando inválido, Backspace, ESC, jogar novamente e falhas ao carregar os cartões).
 
@@ -127,7 +127,7 @@ O projeto parte do template da disciplina, mantendo sua estrutura de pastas:
 |---|---|
 | `main.py` | Ponto de entrada |
 | `src/jogo.py` | Loop principal, eventos de teclado e desenho das telas (jogo e resultado final) |
-| `src/funcoes.py` | Regras do jogo, sem depender do Pygame: `interpretar_comando`, `checar_resposta`, `processar_comando`, `avancar_cartao`, `calcular_pontos`, `tomar_dano`, `jogador_perdeu`, `quebrar_texto` |
+| `src/funcoes.py` | Regras do jogo, sem depender do Pygame: `interpretar_comando`, `checar_resposta`, `processar_comando`, `avancar_cartao`, `sortear_cartoes`, `calcular_pontos`, `tomar_dano`, `jogador_perdeu`, `quebrar_texto` |
 | `src/dados.py` | Leitura e validação dos cartões e leitura/gravação do recorde |
 | `src/config.py` | Constantes: tela, cores e regras (vidas, pontos, custo da verificação, comandos válidos) |
 | `data/` | `cartoes.json` e `recorde.txt` |
@@ -141,7 +141,7 @@ O jogo usa apenas texto e retângulos, então `src/sprites.py` e a spritesheet d
 - Python, Pygame (janela, desenho e teclado) e Pytest (testes).
 - Template oficial da disciplina: https://github.com/ICEI-PUC-Minas-PPL-CDIA/IntroAlgs_pygame_template
 - Fonte Arial do sistema (ou a fonte padrão do Pygame). Nenhuma imagem, som ou fonte externa foi incluída.
-- Os textos dos cartões foram escritos pelo grupo.
+- Os 15 primeiros cartões foram escritos pela Aiandra; os 5 últimos foram redigidos com apoio de IA.
 - Ferramentas de IA generativa (Claude, da Anthropic) foram usadas como apoio na elaboração do código, dos testes e da documentação.
 
 ## 20. Declaração de originalidade

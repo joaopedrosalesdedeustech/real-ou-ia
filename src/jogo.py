@@ -24,6 +24,7 @@ from src.config import (
     VIDAS_INICIAIS,
     CUSTO_VERIFICACAO,
     MAX_CARACTERES_COMANDO,
+    CARTOES_POR_PARTIDA,
 )
 from src.funcoes import (
     criar_estado,
@@ -32,6 +33,7 @@ from src.funcoes import (
     avancar_cartao,
     quebrar_texto,
     e_novo_recorde,
+    sortear_cartoes,
 )
 from src.dados import carregar_cartoes, carregar_recorde, salvar_recorde
 
@@ -245,14 +247,17 @@ def desenhar_tela_fim(tela, fontes, estado, total_cartoes, recorde, novo_recorde
 def executar_jogo():
     """Executa o loop principal do jogo: teclado, regras e desenho da tela."""
     try:
-        cartoes = carregar_cartoes()
+        todos_os_cartoes = carregar_cartoes()
     except (OSError, ValueError) as erro:
         print("Não foi possível carregar os cartões (data/cartoes.json): %s" % erro)
         return
 
-    if len(cartoes) == 0:
+    if len(todos_os_cartoes) == 0:
         print("O arquivo data/cartoes.json não tem nenhum cartão.")
         return
+
+    # Cada partida usa cartões sorteados, em ordem aleatória (e muda a cada nova partida).
+    cartoes = sortear_cartoes(todos_os_cartoes, CARTOES_POR_PARTIDA)
 
     pygame.init()
     tela = pygame.display.set_mode((LARGURA_TELA, ALTURA_TELA))
@@ -295,7 +300,8 @@ def executar_jogo():
 
                 elif evento.key in (pygame.K_RETURN, pygame.K_KP_ENTER):
                     if tela_atual == "fim":
-                        # Começa uma nova partida.
+                        # Começa uma nova partida, com novos cartões sorteados.
+                        cartoes = sortear_cartoes(todos_os_cartoes, CARTOES_POR_PARTIDA)
                         estado = criar_estado()
                         texto_digitado = ""
                         novo_recorde = False

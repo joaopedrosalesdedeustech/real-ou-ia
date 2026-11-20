@@ -17,6 +17,7 @@ import pytest
 
 from src import dados, jogo
 from src.config import (
+    CARTOES_POR_PARTIDA,
     LARGURA_TELA,
     ALTURA_TELA,
     FUNDO,
@@ -94,8 +95,18 @@ def jogar(tmp_path, monkeypatch):
     O resultado tem: recorde_final (int) e saiu_cedo (True se o jogo fechou
     antes de acabarem os quadros, por exemplo com ESC).
     """
-    def executar(quadros, cartoes=CARTOES_TESTE, recorde=0):
-        """Roda o jogo com os quadros de eventos informados e devolve o resultado."""
+    def executar(quadros, cartoes=CARTOES_TESTE, recorde=0, sorteio=None):
+        """Roda o jogo com os quadros de eventos informados e devolve o resultado.
+
+        Por padrão o sorteio de cartões é trocado por um que mantém a ordem do arquivo,
+        para que os testes saibam qual cartão aparece em cada rodada.
+        """
+        if sorteio is None:
+            def sorteio(lista, quantidade):
+                """Pega os primeiros cartões, sem embaralhar."""
+                return lista[:quantidade]
+        monkeypatch.setattr(jogo, "sortear_cartoes", sorteio)
+
         arquivo_recorde = tmp_path / "recorde.txt"
         arquivo_recorde.write_text(str(recorde), encoding="utf-8")
         monkeypatch.setattr(dados, "ARQUIVO_RECORDE", arquivo_recorde)
@@ -248,11 +259,29 @@ def test_nova_partida_pode_superar_o_recorde_da_anterior(jogar):
 
 
 def test_partida_completa_com_os_cartoes_reais(jogar):
-    """Acertar todos os 15 cartões do arquivo real deve render 150 pontos."""
-    cartoes = dados.carregar_cartoes()
+    """Acertar os 15 cartões de uma partida com o arquivo real deve render 150 pontos."""
+    cartoes = dados.carregar_cartoes()[:CARTOES_POR_PARTIDA]
     quadros = quadros_respondendo(cartoes, resposta_certa)
     resultado = jogar(quadros, cartoes=None, recorde=0)
-    assert resultado.recorde_final == 10 * len(cartoes)
+    assert resultado.recorde_final == 10 * CARTOES_POR_PARTIDA
+
+
+def test_cada_partida_sorteia_novos_cartoes(jogar):
+    """O jogo usa a lista sorteada e sorteia de novo ao começar outra partida."""
+    chamadas = []
+
+    def sorteio_girado(lista, quantidade):
+        """Registra o pedido e devolve os cartões em outra ordem (o primeiro vai para o fim)."""
+        chamadas.append(quantidade)
+        return lista[1:] + lista[:1]
+
+    ordem_sorteada = CARTOES_TESTE[1:] + CARTOES_TESTE[:1]
+    quadros = quadros_respondendo(ordem_sorteada, resposta_certa)
+    quadros.append(enter())                                   # tela final -> nova partida
+    quadros += quadros_respondendo(ordem_sorteada, resposta_certa)
+    resultado = jogar(quadros, recorde=0, sorteio=sorteio_girado)
+    assert resultado.recorde_final == 30                      # só acerta se usar a ordem sorteada
+    assert chamadas == [CARTOES_POR_PARTIDA, CARTOES_POR_PARTIDA]
 
 
 # ---------------------------------------------------------------------------

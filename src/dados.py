@@ -15,7 +15,8 @@ def carregar_cartoes():
 
     Retorna uma lista de dicionários com texto, confiavel e pista.
     """
-    with ARQUIVO_CARTOES.open("r", encoding="utf-8") as arquivo:
+    # "utf-8-sig" também aceita arquivos salvos com BOM (comum em editores do Windows).
+    with ARQUIVO_CARTOES.open("r", encoding="utf-8-sig") as arquivo:
         cartoes = json.load(arquivo)
 
     if not isinstance(cartoes, list):
@@ -45,7 +46,7 @@ def carregar_cartoes():
 def carregar_recorde():
     """Lê o recorde salvo; retorna zero se o arquivo não existir ou estiver vazio."""
     try:
-        conteudo = ARQUIVO_RECORDE.read_text(encoding="utf-8").strip()
+        conteudo = ARQUIVO_RECORDE.read_text(encoding="utf-8-sig").strip()
 
         if not conteudo:
             return 0

@@ -24,7 +24,10 @@ Mudanças em relação à proposta inicial (Entrega 1):
 | Entrega 2 | Os cartões da versão final foram escritos pela Aiandra: afirmações sobre informação e IA, em vez de mensagens de exemplo. | Cartões mais alinhados ao tema de uso responsável. |
 | Entrega 2 | O recorde é gravado por `salvar_recorde(pontuacao)`, que só atualiza o arquivo quando a pontuação o supera. | Simplifica o uso no jogo e evita perder um recorde maior. |
 | Entrega 3 | Testes ampliados: lógica, arquivos e interface (partidas completas simuladas). | Mais segurança ao alterar o código. |
+| Entrega 3 | Cada partida **sorteia 15 cartões** em ordem aleatória (antes, todos os cartões do arquivo apareciam sempre na mesma ordem). | Os cartões originais alternavam confiável e suspeito, o que permitia acertar pelo padrão. Sortear evita isso e torna cada partida diferente. |
+| Entrega 3 | Foram acrescentados 5 cartões ao arquivo (20 no total), sem alterar os 15 da Aiandra. Incluem afirmações confiáveis com palavras absolutas e suspeitas com palavras cautelosas, além de privacidade e busca reversa de imagens. | Nos 15 originais, os cartões suspeitos usavam palavras como "sempre" e "prova" e os confiáveis usavam "pode" e "ajuda", o que dava para acertar sem analisar o conteúdo. |
+| Entrega 3 | Leitura de `cartoes.json` e `recorde.txt` passou a aceitar arquivos salvos com BOM; erros ao ler ou gravar o recorde não fecham mais o jogo. | Evitar falhas por detalhes de formato de arquivo no Windows e por falta de permissão. |
 
 ## Melhorias não implementadas
 
-Ficam como evolução futura: menu inicial e tela de instruções, cartões em ordem aleatória, níveis de dificuldade, ranking com os melhores resultados e efeitos sonoros.
+Ficam como evolução futura: menu inicial e tela de instruções, níveis de dificuldade, ranking com os melhores resultados e efeitos sonoros.

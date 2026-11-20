@@ -20,7 +20,7 @@ Esta pasta guarda os arquivos de dados do jogo.
 
 ## Como adicionar cartões
 
-Acrescente novos itens na lista de `cartoes.json`, mantendo textos e pistas curtos (até cerca de 150 caracteres) para caberem na tela. Depois rode `python -m pytest` para conferir se o arquivo continua válido. Atenção: o jogo mostra todos os cartões do arquivo em cada partida e a condição de vitória é responder todos eles.
+Acrescente novos itens na lista de `cartoes.json`, mantendo textos e pistas curtos (até cerca de 150 caracteres) para caberem na tela. Depois rode `python -m pytest` para conferir se o arquivo continua válido. O jogo sorteia 15 cartões do arquivo a cada partida (`CARTOES_POR_PARTIDA`, em `src/config.py`), então o arquivo pode ter mais de 15. Procure misturar cartões confiáveis e suspeitos e variar o estilo da frase: se todos os suspeitos usam palavras como "sempre" ou "prova", o jogador acerta sem analisar o conteúdo.
 
 ## Observação
 
